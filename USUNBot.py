@@ -4,6 +4,13 @@ import random
 class Bot:
 
     def __init__(self):
+        """
+        Initialize the Bot instance.
+        
+        This method creates a list of first names, last names, and emails.
+        It also sets the bot's zip code and subject.
+        Then it calls the go method below in a loop to run the bot 100 times with different names and emails.
+        """
         firsts = [
             "John", "Emma", "Michael", "Olivia", "William", "Ava", "James", "Sophia", "Oliver", "Isabella",
             "Benjamin", "Mia", "Elijah", "Charlotte", "Lucas", "Amelia", "Henry", "Harper", "Alexander", "Evelyn",
@@ -33,7 +40,6 @@ class Bot:
         ]
         self.zip = "90001"
         self.subject = 'CEASEFIRE'
-        self.driver = webdriver.Chrome("/Users/clarafication/Documents/UN BOT/chromedriver")
         messages = [
             "It's infuriating that the USA remains the sole obstacle to a UN-backed ceasefire in Gaza, consistently voting against it.",
             "The UN's paralysis in the face of Gaza's crisis is a direct result of the USA's stubborn 'no' votes for a ceasefire.",
@@ -88,25 +94,38 @@ class Bot:
             "As the world pleads for a Gaza ceasefire, the USA's solitary 'no' vote in the UN becomes a symbol of international paralysis.",
             "Gaza's suffering is prolonged by the USA's unyielding opposition to UN-backed ceasefires, undermining the organization's credibility."
         ]
-
-       
+        self.driver = webdriver.Chrome("/Users/clarafication/Documents/UN BOT/chromedriver")
+        
+        # this is a loop to run the bot 100 times with different names and emails
+        # the random numbers are used to select a randomly from the lists above   
         for x in range(0,100):
             self.first = firsts[random.randint(0,99)]
             self.last = lasts[random.randint(0,99)]
             self.email = firsts[random.randint(0,99)] + lasts[random.randint(0,99)] + emails[random.randint(0,2)]
             self.message = messages[x]
-            self.go()
+            self.go() # this calls the go method below
         
     
     def go(self):
-        self.driver.get("https://usun.usmission.gov/mission/contact-us/")
+        """
+        Navigate to the USUN mission contact page and fill out the contact form.
+
+        This method uses the Selenium WebDriver to navigate to the USUN mission contact page. 
+        It then fills out the form with the bot's first name, last name, email, zip code, subject, and message. 
+        It also handles the reCAPTCHA and submits the form.
+        Sleep is used to allow the page to load before the bot interacts with it.
+        """
+        # this navigates to the USUN mission contact page
+        self.driver.get("https://usun.usmission.gov/mission/contact-us/") 
         sleep(2)
-        self.driver.find_element_by_name('input_3').send_keys(self.first)
+        # this fills out the form with the bot's first name, last name, email, zip code, subject, and message
+        self.driver.find_element_by_name('input_3').send_keys(self.first) 
         self.driver.find_element_by_name('input_4').send_keys(self.last)
         self.driver.find_element_by_name('input_6').send_keys(self.email)
         self.driver.find_element_by_name('input_11').send_keys(self.zip)
         self.driver.find_element_by_name('input_14').send_keys(self.subject)
         self.driver.find_element_by_name('input_15').send_keys(self.message)
+        # this handles the reCAPTCHA
         self.driver.switch_to.default_content() 
         sleep(3)
         self.driver.switch_to.frame(self.driver.find_element_by_xpath(".//iframe[@title='reCAPTCHA']"))
@@ -115,7 +134,9 @@ class Bot:
         sleep(3)
         self.driver.switch_to.default_content()
         sleep(5)
+        # this submits the form
         self.driver.find_element_by_id("gform_submit_button_1").click()
         print("in")
-Bot()
+
+Bot() # this calls the Bot class above
 
