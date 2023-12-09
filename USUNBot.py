@@ -31,7 +31,7 @@ class Bot:
         emails = [
             "@gamil.com", "@yahoo.com", "@hotmail.com"
         ]
-        self.zip = "89052"
+        self.zip = "90001"
         self.subject = 'CEASEFIRE'
         self.driver = webdriver.Chrome("/Users/clarafication/Documents/UN BOT/chromedriver")
         messages = [
